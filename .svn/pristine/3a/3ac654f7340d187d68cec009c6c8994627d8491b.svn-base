@@ -1,0 +1,207 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : mysql
+Source Server Version : 50718
+Source Host           : localhost:3306
+Source Database       : lexue
+
+Target Server Type    : MYSQL
+Target Server Version : 50718
+File Encoding         : 65001
+
+Date: 2017-05-05 22:01:30
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for tb_article
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_article`;
+CREATE TABLE `tb_article` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `LABLE_ID` int(8) unsigned NOT NULL COMMENT '外键，标签ID',
+  `INTRO` varchar(128) NOT NULL DEFAULT '' COMMENT '简介',
+  `RESOURCE_ID` int(8) unsigned NOT NULL COMMENT '外键，资源ID',
+  `BROWSE` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '浏览',
+  `REVIEW` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '评论',
+  `COLLECT` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '收藏',
+  PRIMARY KEY (`ID`),
+  KEY `FK_ARTICLE_USER` (`USER_ID`),
+  KEY `FK_ARTICLE_LABLE` (`LABLE_ID`),
+  KEY `FK_ARTICLE_RESOURCE` (`RESOURCE_ID`),
+  CONSTRAINT `FK_ARTICLE_LABLE` FOREIGN KEY (`LABLE_ID`) REFERENCES `tb_lable` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_ARTICLE_RESOURCE` FOREIGN KEY (`RESOURCE_ID`) REFERENCES `tb_resource` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_ARTICLE_USER` FOREIGN KEY (`USER_ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_browse
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_browse`;
+CREATE TABLE `tb_browse` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `ARTICLE_ID` int(8) unsigned NOT NULL COMMENT '外键，文章ID',
+  `BROWSE_TIME` datetime NOT NULL COMMENT '浏览时间',
+  PRIMARY KEY (`ID`),
+  KEY `FK_BROWSE_USER` (`USER_ID`),
+  KEY `FK_BROWSE_ARTICLE` (`ARTICLE_ID`),
+  CONSTRAINT `FK_BROWSE_ARTICLE` FOREIGN KEY (`ARTICLE_ID`) REFERENCES `tb_article` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_BROWSE_USER` FOREIGN KEY (`USER_ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_career
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_career`;
+CREATE TABLE `tb_career` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `CAREER` varchar(32) NOT NULL COMMENT '职业',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_collect
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_collect`;
+CREATE TABLE `tb_collect` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `ARTICLE_ID` int(8) unsigned NOT NULL COMMENT '外键，文章ID',
+  `COLLECT_TIME` datetime NOT NULL COMMENT '收藏时间',
+  PRIMARY KEY (`ID`),
+  KEY `FK_COLLECT_USER` (`USER_ID`),
+  KEY `FK_COLLECT_ARTICLE` (`ARTICLE_ID`),
+  CONSTRAINT `FK_COLLECT_ARTICLE` FOREIGN KEY (`ARTICLE_ID`) REFERENCES `tb_article` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_COLLECT_USER` FOREIGN KEY (`USER_ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_college
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_college`;
+CREATE TABLE `tb_college` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `COLLEGE` varchar(32) NOT NULL COMMENT '大学',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_lable
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_lable`;
+CREATE TABLE `tb_lable` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `LABLE` varchar(32) NOT NULL COMMENT '标签',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_major
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_major`;
+CREATE TABLE `tb_major` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `TB_MAGOR` varchar(32) NOT NULL COMMENT '专业',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_register
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_register`;
+CREATE TABLE `tb_register` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `NAME` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户名',
+  `EMAIL` varchar(48) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '电子邮箱',
+  `PASSWARD` char(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密码',
+  `CODE` char(6) NOT NULL COMMENT '验证码',
+  `REGISTER_TIME` datetime NOT NULL COMMENT '注册时间',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_resource`;
+CREATE TABLE `tb_resource` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `TITLE` varchar(48) NOT NULL COMMENT '文章标题',
+  `AUTHOR` varchar(32) NOT NULL COMMENT '作者',
+  `PATH` varchar(32) NOT NULL COMMENT '资源路径',
+  `ORIGINAL` varchar(48) NOT NULL DEFAULT '' COMMENT '原文地址',
+  PRIMARY KEY (`ID`),
+  KEY `FK_RESOURCE_USER` (`USER_ID`),
+  CONSTRAINT `FK_RESOURCE_USER` FOREIGN KEY (`USER_ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_review
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_review`;
+CREATE TABLE `tb_review` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `ARTICLE_ID` int(8) unsigned NOT NULL COMMENT '外键，文章ID',
+  `REVIEW_FLOOR` int(8) unsigned NOT NULL COMMENT '评论楼层',
+  `REVIEW_PATH` varchar(32) NOT NULL COMMENT '评论路径',
+  `REVIEW_TIME` datetime NOT NULL COMMENT '评论时间',
+  PRIMARY KEY (`ID`),
+  KEY `FK_REVIEW_USER` (`USER_ID`),
+  KEY `FK_REVIEW_ARTICLE` (`ARTICLE_ID`),
+  CONSTRAINT `FK_REVIEW_ARTICLE` FOREIGN KEY (`ARTICLE_ID`) REFERENCES `tb_article` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_REVIEW_USER` FOREIGN KEY (`USER_ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_user
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user`;
+CREATE TABLE `tb_user` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `NAME` varchar(32) NOT NULL COMMENT '用户名',
+  `EMAIL` varchar(48) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '电子邮箱',
+  `PASSWARD` char(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密码',
+  `REGISTER_TIME` datetime NOT NULL COMMENT '注册时间',
+  `TYPE_ID` int(8) unsigned NOT NULL COMMENT '用户类型',
+  PRIMARY KEY (`ID`),
+  KEY `FK_USER_TYPE` (`TYPE_ID`),
+  CONSTRAINT `FK_USER_TYPE` FOREIGN KEY (`TYPE_ID`) REFERENCES `tb_user_type` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_user_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user_detail`;
+CREATE TABLE `tb_user_detail` (
+  `ID` int(8) unsigned NOT NULL COMMENT '外键，用户ID',
+  `PORTRAIT` varchar(32) DEFAULT NULL,
+  `PHONE` char(11) DEFAULT NULL COMMENT '手机号码',
+  `CAREER_ID` int(8) unsigned DEFAULT NULL COMMENT '外键，职业ID',
+  `COLLEGE_ID` int(8) unsigned DEFAULT NULL COMMENT '外键，大学ID',
+  `MAJOR_ID` int(8) unsigned DEFAULT NULL COMMENT '外键，专业ID',
+  `SIGNATURE` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '个人签名',
+  `BIRTHDAY` date DEFAULT NULL COMMENT '出生日期',
+  KEY `FK_USER_DETAIL_CAREER` (`CAREER_ID`),
+  KEY `FK_USER_DETAIL_COLLEGE` (`COLLEGE_ID`),
+  KEY `FK_USER_DETAIL_MAJOR` (`MAJOR_ID`),
+  KEY `FK_USER_DETAIL_ID` (`ID`),
+  CONSTRAINT `FK_USER_DETAIL_CAREER` FOREIGN KEY (`CAREER_ID`) REFERENCES `tb_career` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_DETAIL_COLLEGE` FOREIGN KEY (`COLLEGE_ID`) REFERENCES `tb_college` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_DETAIL_ID` FOREIGN KEY (`ID`) REFERENCES `tb_user` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_DETAIL_MAJOR` FOREIGN KEY (`MAJOR_ID`) REFERENCES `tb_major` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for tb_user_type
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_user_type`;
+CREATE TABLE `tb_user_type` (
+  `ID` int(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `USER_TYPE` varchar(16) NOT NULL COMMENT '用户类型',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

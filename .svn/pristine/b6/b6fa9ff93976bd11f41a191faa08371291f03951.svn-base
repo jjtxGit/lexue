@@ -1,0 +1,4 @@
+jdbc_url=jdbc:mysql://202.197.191.253:3306/lexue?characterEncoding=utf-8
+jdbc_username=lexue
+jdbc_driver=com.mysql.jdbc.Driver
+jdbc_password=lexue11.

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<configuration>
+
+    <!-- 给类取别名 -->
+    <typeAliases>
+        <package name="com.zw.lexue.bean"/>
+    </typeAliases>
+
+    <!--配置所用的mapper.xml文件 -->
+    <mappers>
+        <package name="com.zw.lexue.dao"/>
+    </mappers>
+
+
+</configuration>
+
+

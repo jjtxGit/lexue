@@ -1,0 +1,15 @@
+package com.zw.lexue.dao;
+
+import com.zw.lexue.bean.Demo;
+
+import java.util.List;
+
+/**
+ * Created by jian on 05/05/17.
+ */
+
+
+public interface DemoDao {
+
+    List<Demo> getDemoList();
+}

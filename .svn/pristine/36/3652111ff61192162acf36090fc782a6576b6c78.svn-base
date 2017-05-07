@@ -1,0 +1,33 @@
+package com.zw.lexue.handler;
+
+import com.zw.lexue.bean.Demo;
+import com.zw.lexue.service.DemoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+/**
+ * Created by jian on 05/05/17.
+ */
+@RequestMapping("demo")
+@Controller
+public class DemoHandler {
+
+    @Autowired
+    private DemoService demoService;
+
+
+    @RequestMapping("test")
+    public String demoTest(){
+
+       List<Demo> demoList= demoService.demoList();
+
+        System.out.println(demoList.size());
+
+       return "demo/demo";
+
+    }
+
+}
